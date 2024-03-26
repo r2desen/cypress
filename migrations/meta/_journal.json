@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711482828256,
+      "tag": "0000_wooden_fabian_cortez",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1711484525832,
+      "tag": "0001_tan_liz_osborn",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1711485091145,
+      "tag": "0002_striped_hercules",
+      "breakpoints": true
+    }
+  ]
+}
