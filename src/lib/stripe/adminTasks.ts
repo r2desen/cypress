@@ -1,16 +1,16 @@
-import Stripe from "stripe";
-import { Price, Product, Subscription } from "../supabase/supabase.types";
-import db from "../supabase/db";
+import Stripe from 'stripe';
+import { Price, Product, Subscription } from '../supabase/supabase.types';
+import db from '../supabase/db';
 import {
   customers,
   prices,
   products,
   subscriptions,
   users,
-} from "../../../migrations/schema";
-import { stripe } from "./index";
-import { eq } from "drizzle-orm";
-import { toDateTime } from "../utils";
+} from '../../../migrations/schema';
+import { stripe } from './index';
+import { eq } from 'drizzle-orm';
+import { toDateTime } from '../utils';
 
 export const upsertProductRecord = async (product: Stripe.Product) => {
   const productData: Product = {
@@ -29,14 +29,14 @@ export const upsertProductRecord = async (product: Stripe.Product) => {
   } catch (error) {
     throw new Error();
   }
-  console.log("Product inserted/updates:", product.id);
+  console.log('Product inserted/updates:', product.id);
 };
 
 export const upsertPriceRecord = async (price: Stripe.Price) => {
-  console.log(price, "PRICE");
+  console.log(price, 'PRICE');
   const priceData: Price = {
     id: price.id,
-    productId: typeof price.product === "string" ? price.product : null,
+    productId: typeof price.product === 'string' ? price.product : null,
     active: price.active,
     currency: price.currency,
     description: price.nickname ?? null,
@@ -87,7 +87,7 @@ export const createOrRetrieveCustomer = async ({
       console.log(`New customer created and inserted for ${uuid}.`);
       return customer.id;
     } catch (stripeError) {
-      throw new Error("Could not create Customer or find the customer");
+      throw new Error('Could not create Customer or find the customer');
     }
   }
 };
@@ -110,7 +110,7 @@ export const copyBillingDetailsToCustomer = async (
       })
       .where(eq(users.id, uuid));
   } catch (error) {
-    throw new Error("Could not copy customer billing details");
+    throw new Error('Couldnot copy customer billing details');
   }
 };
 
@@ -123,12 +123,12 @@ export const manageSubscriptionStatusChange = async (
     const customerData = await db.query.customers.findFirst({
       where: (c, { eq }) => eq(c.stripeCustomerId, customerId),
     });
-    if (!customerData) throw new Error("🔴Cannot find the customer");
+    if (!customerData) throw new Error('🔴Cannot find the customer');
     const { id: uuid } = customerData;
     const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
-      expand: ["default_payment_method"],
+      expand: ['default_payment_method'],
     });
-    console.log("🟢UPDATED to  ", subscription.status);
+    console.log('🟢UPDATED to  ',subscription.status);
 
     const subscriptionData: Subscription = {
       id: subscription.id,
